@@ -17,7 +17,7 @@ Create decisison with ease to help you support business decision for location ex
 ### Technologies that we used
 1. Python
 2. Streamlit
-3. AutoScraper to Scrape data from Google Maps
+3. scrapegraphai to scrape data from Google Maps
 4. DSS using Machine Learning
 
 ### Contribute
