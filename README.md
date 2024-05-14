@@ -2,14 +2,15 @@
 Create decisison with ease to help you support business decision for location expansion
 
 ### Reason why i make this
-1. To finish my last project with my classmates for 'Decision Support System' course
+1. To finish my final project with my classmates for 'Decision Support System' course
 > My team for this project:
 > 1. Muhammad Rizqi
 > 2. Nanda Putri Korina
 > 3. Muhammad Habid Ali
 > 4. Sabrina Putri Korina
 
-2. To do challenges for BI Hackaton
+2. To do challenges for [BI Hackaton](https://www.bi.go.id/id/Hackaton/default.aspx)
+> Actually, i didn't find any teammates yet
 
 ### App link
 > App
