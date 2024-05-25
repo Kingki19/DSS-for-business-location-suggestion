@@ -20,8 +20,7 @@ def main():
         with st.sidebar:
                 GEMINI_API_KEY = st.text_input(
                         label = 'input your gemini api key',
-                        type = 'password',
-                        help = 'Go to makersuite 
+                        type = 'password'
                 )
                 check_gemini_api_key_is_true(GEMINI_API_KEY)
         
