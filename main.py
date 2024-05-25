@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import google.generativeai as genai
 
 def check_gemini_api_key_is_true(gemini_api_key:str):
         st.info("If you don't have Gemini API Key, go to link below:", icon="ℹ️")
