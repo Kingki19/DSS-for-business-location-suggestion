@@ -23,6 +23,7 @@ def main():
                         type = 'password'
                 )
                 check_gemini_api_key_is_true(GEMINI_API_KEY)
-        
+
+main()
                 
   
