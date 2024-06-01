@@ -24,35 +24,36 @@ def data_asli() -> pd.DataFrame:
                 'harga_sewa_pertahun': [3_000_000, 1_800_000]
         })
         return df
-
-def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
-        if nama_kriteria:
-                df[nama_kriteria] = nilai_kriteria
-                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
-        else:
-                st.warning("Harap masukkan nama kolom baru.")
-
-def hapus_kolom_kriteria(df, nama_kriteria):
-        if nama_kriteria:
-                df.drop(columns=[nama_kriteria], inplace=True)
-                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
-        else:
-                st.warning("Harap pilih kolom yang ingin dihapus.")
-
-def hapus_baris(df, baris):
-        if baris in st.session_state.df.index:
-                st.session_state.df.drop(index=baris, inplace=True)
-                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
-        else:
-                st.warning("Harap pilih baris yang ingin dihapus.")
-
-def tambah_baris(df, baris_baru):
-        if all(baris_baru.values()):
-                new_row_df = pd.DataFrame([baris_baru])
-                st.session_state.df = pd.concat([df, new_row_df], ignore_index=True)
-                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
-        else:
-                st.warning("Harap masukkan semua nilai untuk baris baru.")
+        
+class Manipulasi_df:
+        def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
+                if nama_kriteria:
+                        df[nama_kriteria] = nilai_kriteria
+                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+                else:
+                        st.warning("Harap masukkan nama kolom baru.")
+        
+        def hapus_kolom_kriteria(df, nama_kriteria):
+                if nama_kriteria:
+                        df.drop(columns=[nama_kriteria], inplace=True)
+                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+                else:
+                        st.warning("Harap pilih kolom yang ingin dihapus.")
+        
+        def hapus_baris(df, baris):
+                if baris in st.session_state.df.index:
+                        st.session_state.df.drop(index=baris, inplace=True)
+                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+                else:
+                        st.warning("Harap pilih baris yang ingin dihapus.")
+        
+        def tambah_baris(df, baris_baru):
+                if all(baris_baru.values()):
+                        new_row_df = pd.DataFrame([baris_baru])
+                        st.session_state.df = pd.concat([df, new_row_df], ignore_index=True)
+                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+                else:
+                        st.warning("Harap masukkan semua nilai untuk baris baru.")
 
 def main():
         st.title('DSS for Business Location Suggestion')   
@@ -74,7 +75,7 @@ def main():
                         new_column_value = st.text_input('Masukkan nilai untuk kolom baru:')
                         # Tombol untuk menambahkan kolom baru
                         if st.button("Tambah Kolom Baru"):
-                                tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
+                                Manipulasi_df.tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
         
         with col_hapus_kriteria:
                 with st.popover('hapus kriteria'):
@@ -82,14 +83,14 @@ def main():
                         column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
                         # Tombol untuk menghapus kolom
                         if st.button("Hapus Kolom"):
-                                hapus_kolom_kriteria(st.session_state.df, column_to_drop)
+                                Manipulasi_df.hapus_kolom_kriteria(st.session_state.df, column_to_drop)
         
         with col_hapus_baris:
                 with st.popover('hapus baris'):
                         # Pilih baris untuk dihapus
                         row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan indeks):', st.session_state.df.index)
                         if st.button("Hapus Baris"):
-                                hapus_baris(st.session_state.df, row_to_drop)
+                                Manipulasi_df.hapus_baris(st.session_state.df, row_to_drop)
         
         with col_tambah_baris:
                 with st.popover('tambah baris'):
@@ -99,7 +100,7 @@ def main():
                                 new_row[col] = st.text_input(f'Masukkan nilai untuk {col}', key=f'input_{col}')
                         # Tombol untuk menambahkan baris baru
                         if st.button("Tambah Baris Baru"):
-                                tambah_baris(st.session_state.df, new_row)
+                                Manipulasi_df.tambah_baris(st.session_state.df, new_row)
         
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
