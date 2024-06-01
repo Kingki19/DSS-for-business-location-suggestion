@@ -74,7 +74,7 @@ def main():
         with col_hapus_baris:
                  # Pilih baris untuk dihapus
                 row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan indeks):', st.session_state.df.index)
-                if st.button("Hapus Baris")
+                if st.button("Hapus Baris"):
                         hapus_baris(st.session_state.df, row_to_drop)
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
