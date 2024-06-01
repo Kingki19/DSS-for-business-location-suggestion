@@ -39,6 +39,13 @@ def hapus_kolom_kriteria(df, nama_kriteria):
         else:
                 st.warning("Harap pilih kolom yang ingin dihapus.")
 
+def hapus_baris(df, baris):
+        if baris in st.session_state.df.index:
+                st.session_state.df.drop(index=baris, inplace=True)
+                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+        else:
+                st.warning("Harap pilih baris yang ingin dihapus.")
+
 def main():
         st.title('DSS for Business Location Suggestion')   
         
@@ -49,7 +56,7 @@ def main():
         # Menampilkan editor data
         edited_df = st.data_editor(st.session_state.df, num_rows='dynamic')
 
-        col_tambah_kriteria, col_hapus_kriteria = st.columns(2)
+        col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris = st.columns(3)
         with col_tambah_kriteria:
                 # Input untuk nama kolom baru
                 new_column_name = st.text_input('Masukkan nama kolom baru:')
@@ -64,7 +71,11 @@ def main():
                 # Tombol untuk menghapus kolom
                 if st.button("Hapus Kolom"):
                         hapus_kolom_kriteria(st.session_state.df, column_to_drop)
-        
+        with col_hapus_baris:
+                 # Pilih baris untuk dihapus
+                row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan indeks):', st.session_state.df.index)
+                if st.button("Hapus Baris")
+                        hapus_baris(st.session_state.df, row_to_drop)
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
         st.write(st.session_state.df)
