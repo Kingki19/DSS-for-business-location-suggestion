@@ -65,37 +65,41 @@ def main():
         edited_df = st.data_editor(st.session_state.df, num_rows='dynamic')
 
         col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris, col_tambah_baris = st.columns(4)
-        
+       
         with col_tambah_kriteria:
-                # Input untuk nama kolom baru
-                new_column_name = st.text_input('Masukkan nama kolom baru:')
-                # Input untuk nilai kolom baru
-                new_column_value = st.text_input('Masukkan nilai untuk kolom baru:')
-                # Tombol untuk menambahkan kolom baru
-                if st.button("Tambah Kolom Baru"):
-                        tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
+                with st.popover('tambah kriteria'):
+                        # Input untuk nama kolom baru
+                        new_column_name = st.text_input('Masukkan nama kolom baru:')
+                        # Input untuk nilai kolom baru
+                        new_column_value = st.text_input('Masukkan nilai untuk kolom baru:')
+                        # Tombol untuk menambahkan kolom baru
+                        if st.button("Tambah Kolom Baru"):
+                                tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
         
         with col_hapus_kriteria:
-                # Pilih kolom untuk dihapus
-                column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
-                # Tombol untuk menghapus kolom
-                if st.button("Hapus Kolom"):
-                        hapus_kolom_kriteria(st.session_state.df, column_to_drop)
+                with st.popover('hapus kriteria'):
+                        # Pilih kolom untuk dihapus
+                        column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
+                        # Tombol untuk menghapus kolom
+                        if st.button("Hapus Kolom"):
+                                hapus_kolom_kriteria(st.session_state.df, column_to_drop)
         
         with col_hapus_baris:
-                # Pilih baris untuk dihapus
-                row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan indeks):', st.session_state.df.index)
-                if st.button("Hapus Baris"):
-                        hapus_baris(st.session_state.df, row_to_drop)
+                with st.popover('hapus baris'):
+                        # Pilih baris untuk dihapus
+                        row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan indeks):', st.session_state.df.index)
+                        if st.button("Hapus Baris"):
+                                hapus_baris(st.session_state.df, row_to_drop)
         
         with col_tambah_baris:
-                # Input untuk menambah baris baru
-                new_row = {}
-                for col in st.session_state.df.columns:
-                        new_row[col] = st.text_input(f'Masukkan nilai untuk {col}', key=f'input_{col}')
-                # Tombol untuk menambahkan baris baru
-                if st.button("Tambah Baris Baru"):
-                        tambah_baris(st.session_state.df, new_row)
+                with st.popover('tambah baris'):
+                        # Input untuk menambah baris baru
+                        new_row = {}
+                        for col in st.session_state.df.columns:
+                                new_row[col] = st.text_input(f'Masukkan nilai untuk {col}', key=f'input_{col}')
+                        # Tombol untuk menambahkan baris baru
+                        if st.button("Tambah Baris Baru"):
+                                tambah_baris(st.session_state.df, new_row)
         
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
