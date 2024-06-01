@@ -27,12 +27,14 @@ def data_asli() -> pd.DataFrame:
 
 
 def main():
-        st.title('DSS for business location suggestion')   
-        # Memuat data asli
-        df = data_asli()
+        st.title('DSS for Business Location Suggestion')   
         
+        # Memuat data asli
+        if 'df' not in st.session_state:
+                st.session_state.df = data_asli()
+
         # Menampilkan editor data
-        edited_df = st.data_editor(df)
+        edited_df = st.data_editor(st.session_state.df)
         
         # Input untuk nama kolom baru
         new_column_name = st.text_input('Masukkan nama kolom baru:')
@@ -43,17 +45,25 @@ def main():
         # Tombol untuk menambahkan kolom baru
         if st.button("Tambah Kolom Baru"):
                 if new_column_name:
-                        edited_df[new_column_name] = new_column_value
-                        st.write("Data setelah penambahan kolom:")
-                        st.write(edited_df)
+                        st.session_state.df[new_column_name] = new_column_value
+                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap masukkan nama kolom baru.")
         
+        # Pilih kolom untuk dihapus
+        column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
+        
+        # Tombol untuk menghapus kolom
+        if st.button("Hapus Kolom"):
+                if column_to_drop:
+                        st.session_state.df.drop(columns=[column_to_drop], inplace=True)
+                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+                else:
+                        st.warning("Harap pilih kolom yang ingin dihapus.")
+        
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
-        st.write(edited_df)
+        st.write(st.session_state.df)
 
 if __name__ == "__main__":
         main()
-                
-  
