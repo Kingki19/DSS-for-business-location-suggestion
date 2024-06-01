@@ -26,7 +26,7 @@ def data_asli() -> pd.DataFrame:
         return df
 
 def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
-        if new_column_name:
+        if nama_kriteria:
                 df[nama_kriteria] = nilai_kriteria
                 st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
         else:
