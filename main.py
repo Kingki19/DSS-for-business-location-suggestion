@@ -47,7 +47,7 @@ def main():
                 st.session_state.df = data_asli()
 
         # Menampilkan editor data
-        edited_df = st.data_editor(st.session_state.df)
+        edited_df = st.data_editor(st.session_state.df, num_rows='dynamic')
 
         col_tambah_kriteria, col_hapus_kriteria = st.columns(2)
         with col_tambah_kriteria:
