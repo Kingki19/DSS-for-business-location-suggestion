@@ -34,15 +34,15 @@ def main():
         #         layout="wide",
         #         initial_sidebar_state="collapsed"
         # )
-        with st.sidebar:
-                GEMINI_API_KEY = st.text_input(
-                        label = 'input your gemini api key',
-                        type = 'password'
-                )
-                check_gemini_api_key_is_true(GEMINI_API_KEY)
-                st.markdown("""
-                        > Tidak butuh API untuk demonya
-                """)
+        # with st.sidebar:
+        #         GEMINI_API_KEY = st.text_input(
+        #                 label = 'input your gemini api key',
+        #                 type = 'password'
+        #         )
+        #         check_gemini_api_key_is_true(GEMINI_API_KEY)
+        #         st.markdown("""
+        #                 > Tidak butuh API untuk demonya
+        #         """)
                 
         edited_df = st.data_editor(data_asli())
 
