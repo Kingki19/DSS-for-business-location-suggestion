@@ -30,7 +30,7 @@ def main():
         st.title('DSS for business location suggestion')
         st.set_page_config(
                 page_title="DSS kelompok 2",
-                page_icon="👨🏻‍💼",
+                # page_icon="👨🏻‍💼",
                 layout="wide",
                 initial_sidebar_state="collapsed"
         )
