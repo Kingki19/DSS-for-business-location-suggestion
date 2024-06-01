@@ -63,7 +63,7 @@ def main():
                 column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
                 # Tombol untuk menghapus kolom
                 if st.button("Hapus Kolom"):
-                        hapus_kolom_kriteria(st.session_state.df, new_column_name)
+                        hapus_kolom_kriteria(st.session_state.df, column_to_drop)
         
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
