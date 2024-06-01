@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import google.generativeai as genai
 
-def check_gemini_api_key_is_true(gemini_api_key:str):
+def check_gemini_api_key_is_true(gemini_api_key: str):
         st.info("If you don't have Gemini API Key, go to link below:", icon="ℹ️")
         st.markdown(f"""
                 [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
@@ -46,6 +46,14 @@ def hapus_baris(df, baris):
         else:
                 st.warning("Harap pilih baris yang ingin dihapus.")
 
+def tambah_baris(df, baris_baru):
+        if all(baris_baru.values()):
+                new_row_df = pd.DataFrame([baris_baru])
+                st.session_state.df = pd.concat([df, new_row_df], ignore_index=True)
+                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+        else:
+                st.warning("Harap masukkan semua nilai untuk baris baru.")
+
 def main():
         st.title('DSS for Business Location Suggestion')   
         
@@ -56,7 +64,8 @@ def main():
         # Menampilkan editor data
         edited_df = st.data_editor(st.session_state.df, num_rows='dynamic')
 
-        col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris = st.columns(3)
+        col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris, col_tambah_baris = st.columns(4)
+        
         with col_tambah_kriteria:
                 # Input untuk nama kolom baru
                 new_column_name = st.text_input('Masukkan nama kolom baru:')
@@ -65,17 +74,29 @@ def main():
                 # Tombol untuk menambahkan kolom baru
                 if st.button("Tambah Kolom Baru"):
                         tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
+        
         with col_hapus_kriteria:
                 # Pilih kolom untuk dihapus
                 column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
                 # Tombol untuk menghapus kolom
                 if st.button("Hapus Kolom"):
                         hapus_kolom_kriteria(st.session_state.df, column_to_drop)
+        
         with col_hapus_baris:
-                 # Pilih baris untuk dihapus
+                # Pilih baris untuk dihapus
                 row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan indeks):', st.session_state.df.index)
                 if st.button("Hapus Baris"):
                         hapus_baris(st.session_state.df, row_to_drop)
+        
+        with col_tambah_baris:
+                # Input untuk menambah baris baru
+                new_row = {}
+                for col in st.session_state.df.columns:
+                        new_row[col] = st.text_input(f'Masukkan nilai untuk {col}', key=f'input_{col}')
+                # Tombol untuk menambahkan baris baru
+                if st.button("Tambah Baris Baru"):
+                        tambah_baris(st.session_state.df, new_row)
+        
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
         st.write(st.session_state.df)
