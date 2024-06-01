@@ -32,7 +32,7 @@ def main():
                 page_title="DSS kelompok 2",
                 page_icon="👨🏻‍💼",
                 layout="wide",
-                initial_sidebar_state="collapsed",
+                initial_sidebar_state="collapsed"
         )
         with st.sidebar:
                 GEMINI_API_KEY = st.text_input(
