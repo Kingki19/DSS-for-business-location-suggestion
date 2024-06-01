@@ -25,6 +25,19 @@ def data_asli() -> pd.DataFrame:
         })
         return df
 
+def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
+        if new_column_name:
+                df[nama_kriteria] = nilai_kriteria
+                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+        else:
+                st.warning("Harap masukkan nama kolom baru.")
+
+def hapus_kolom_kriteria(df, nama_kriteria):
+        if column_to_drop:
+                df.drop(columns=[nama_kriteria], inplace=True)
+                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+        else:
+                st.warning("Harap pilih kolom yang ingin dihapus.")
 
 def main():
         st.title('DSS for Business Location Suggestion')   
@@ -35,31 +48,22 @@ def main():
 
         # Menampilkan editor data
         edited_df = st.data_editor(st.session_state.df)
-        
-        # Input untuk nama kolom baru
-        new_column_name = st.text_input('Masukkan nama kolom baru:')
-        
-        # Input untuk nilai kolom baru
-        new_column_value = st.text_input('Masukkan nilai untuk kolom baru:')
-        
-        # Tombol untuk menambahkan kolom baru
-        if st.button("Tambah Kolom Baru"):
-                if new_column_name:
-                        st.session_state.df[new_column_name] = new_column_value
-                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
-                else:
-                        st.warning("Harap masukkan nama kolom baru.")
-        
-        # Pilih kolom untuk dihapus
-        column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
-        
-        # Tombol untuk menghapus kolom
-        if st.button("Hapus Kolom"):
-                if column_to_drop:
-                        st.session_state.df.drop(columns=[column_to_drop], inplace=True)
-                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
-                else:
-                        st.warning("Harap pilih kolom yang ingin dihapus.")
+
+        col_tambah_kriteria, col_hapus_kriteria = st.columns(2)
+        with col_tambah_kriteria:
+                # Input untuk nama kolom baru
+                new_column_name = st.text_input('Masukkan nama kolom baru:')
+                # Input untuk nilai kolom baru
+                new_column_value = st.text_input('Masukkan nilai untuk kolom baru:')
+                # Tombol untuk menambahkan kolom baru
+                if st.button("Tambah Kolom Baru"):
+                        tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
+        with col_hapus_kriteria:
+                # Pilih kolom untuk dihapus
+                column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
+                # Tombol untuk menghapus kolom
+                if st.button("Hapus Kolom"):
+                        hapus_kolom_kriteria(st.session_state.df, new_column_name)
         
         # Menampilkan DataFrame yang telah diedit
         st.write("Data setelah diedit:")
