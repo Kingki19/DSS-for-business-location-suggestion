@@ -27,25 +27,33 @@ def data_asli() -> pd.DataFrame:
 
 
 def main():
-        st.title('DSS for business location suggestion')
-        # st.set_page_config(
-        #         page_title="DSS kelompok 2",
-        #         # page_icon="👨🏻‍💼",
-        #         layout="wide",
-        #         initial_sidebar_state="collapsed"
-        # )
-        # with st.sidebar:
-        #         GEMINI_API_KEY = st.text_input(
-        #                 label = 'input your gemini api key',
-        #                 type = 'password'
-        #         )
-        #         check_gemini_api_key_is_true(GEMINI_API_KEY)
-        #         st.markdown("""
-        #                 > Tidak butuh API untuk demonya
-        #         """)
-                
-        edited_df = st.data_editor(data_asli())
+        st.title('DSS for business location suggestion')   
+        # Memuat data asli
+        df = data_asli()
+        
+        # Menampilkan editor data
+        edited_df = st.data_editor(df)
+        
+        # Input untuk nama kolom baru
+        new_column_name = st.text_input('Masukkan nama kolom baru:')
+        
+        # Input untuk nilai kolom baru
+        new_column_value = st.text_input('Masukkan nilai untuk kolom baru:')
+        
+        # Tombol untuk menambahkan kolom baru
+        if st.button("Tambah Kolom Baru"):
+                if new_column_name:
+                        edited_df[new_column_name] = new_column_value
+                        st.write("Data setelah penambahan kolom:")
+                        st.write(edited_df)
+                else:
+                        st.warning("Harap masukkan nama kolom baru.")
+        
+        # Menampilkan DataFrame yang telah diedit
+        st.write("Data setelah diedit:")
+        st.write(edited_df)
 
-main()
+if __name__ == "__main__":
+        main()
                 
   
