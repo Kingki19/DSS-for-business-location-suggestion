@@ -18,8 +18,9 @@ Create decisison with ease to help you support business decision for location ex
 ### Technologies that we used
 1. Python
 2. Streamlit
-3. scrapegraphai to scrape data from Google Maps
-4. DSS using Machine Learning
+3. ~scrapegraphai to scrape data from Google Maps~
+4. ~DSS using Machine Learning~
+5. AHP
 
 ### Contribute
 - Copy this repo and create branch and add feature or fix something
