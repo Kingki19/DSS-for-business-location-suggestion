@@ -33,7 +33,7 @@ def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
                 st.warning("Harap masukkan nama kolom baru.")
 
 def hapus_kolom_kriteria(df, nama_kriteria):
-        if column_to_drop:
+        if nama_kriteria:
                 df.drop(columns=[nama_kriteria], inplace=True)
                 st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
         else:
