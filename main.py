@@ -28,12 +28,12 @@ def data_asli() -> pd.DataFrame:
 
 def main():
         st.title('DSS for business location suggestion')
-        st.set_page_config(
-                page_title="DSS kelompok 2",
-                # page_icon="👨🏻‍💼",
-                layout="wide",
-                initial_sidebar_state="collapsed"
-        )
+        # st.set_page_config(
+        #         page_title="DSS kelompok 2",
+        #         # page_icon="👨🏻‍💼",
+        #         layout="wide",
+        #         initial_sidebar_state="collapsed"
+        # )
         with st.sidebar:
                 GEMINI_API_KEY = st.text_input(
                         label = 'input your gemini api key',
