@@ -18,7 +18,6 @@ def check_gemini_api_key_is_true(gemini_api_key: str):
                 except Exception as e:
                         st.warning(e)
 
-
 def data_asli() -> pd.DataFrame:
         df = pd.DataFrame({
                 'alternatif': ['Lokasi 1', 'Lokasi 2'],
@@ -26,8 +25,8 @@ def data_asli() -> pd.DataFrame:
                 'harga_sewa_pertahun': [3_000_000, 1_800_000]
         })
         return df
-        
-def create_filtered_dataframe(df:pd.DataFrame, exclude_column:str) -> pd.DataFrame :
+
+def create_filtered_dataframe(df: pd.DataFrame, exclude_column: str) -> pd.DataFrame:
         # Mengambil semua nama kolom kecuali 'exclude_column'
         columns_to_keep = [col for col in df.columns if col != exclude_column]
 
@@ -37,22 +36,19 @@ def create_filtered_dataframe(df:pd.DataFrame, exclude_column:str) -> pd.DataFra
         # Menambahkan kolom indeks yang berisi nama-nama kolom
         df_filtered['index_column'] = columns_to_keep
 
-        # Menjadikan 'index_column' sebagai indeks
-        # df_filtered.set_index('index_column', inplace=True)
-
         return df_filtered
-        
+
 class Manipulasi_df:
+        @staticmethod
         def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
                 if nama_kriteria:
                         df[nama_kriteria] = nilai_kriteria
-                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                         st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
-                        st.experimental_rerun() 
-                        
+                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap masukkan nama kolom baru.")
-        
+
+        @staticmethod
         def hapus_kolom_kriteria(df, nama_kriteria):
                 if nama_kriteria:
                         if nama_kriteria == COLUMN_EXCLUDE:
@@ -63,26 +59,29 @@ class Manipulasi_df:
                                 st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap pilih kolom yang ingin dihapus.")
-        
+
+        @staticmethod
         def hapus_baris(df, baris):
                 if baris in df[COLUMN_EXCLUDE].values:
                         st.session_state.df = df[df[COLUMN_EXCLUDE] != baris]
-                        # st.session_state.df.drop(index=baris, inplace=True)
+                        st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
                         st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap pilih baris yang ingin dihapus.")
-        
+
+        @staticmethod
         def tambah_baris(df, baris_baru):
                 if all(baris_baru.values()):
                         new_row_df = pd.DataFrame([baris_baru])
                         st.session_state.df = pd.concat([df, new_row_df], ignore_index=True)
+                        st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
                         st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap masukkan semua nilai untuk baris baru.")
 
 def main():
-        st.title('DSS for Business Location Suggestion')   
-        
+        st.title('DSS for Business Location Suggestion')
+
         # Memuat data asli
         if 'df' not in st.session_state:
                 st.session_state.df = data_asli()
@@ -94,9 +93,9 @@ def main():
         edited_df_original = st.data_editor(st.session_state.df)
 
         col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris, col_tambah_baris = st.columns(4)
-       
+
         with col_tambah_kriteria:
-                with st.popover('tambah kriteria'):
+                with st.expander('Tambah Kriteria'):
                         # Input untuk nama kolom baru
                         new_column_name = st.text_input('Masukkan nama kolom baru:')
                         # Input untuk nilai kolom baru
@@ -104,24 +103,24 @@ def main():
                         # Tombol untuk menambahkan kolom baru
                         if st.button("Tambah Kolom Baru"):
                                 Manipulasi_df.tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
-        
+
         with col_hapus_kriteria:
-                with st.popover('hapus kriteria'):
+                with st.expander('Hapus Kriteria'):
                         # Pilih kolom untuk dihapus
                         column_to_drop = st.selectbox('Pilih kolom yang ingin dihapus:', st.session_state.df.columns)
                         # Tombol untuk menghapus kolom
                         if st.button("Hapus Kolom"):
                                 Manipulasi_df.hapus_kolom_kriteria(st.session_state.df, column_to_drop)
-        
+
         with col_hapus_baris:
-                with st.popover('hapus baris'):
+                with st.expander('Hapus Baris'):
                         # Pilih baris untuk dihapus
                         row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan alternatif):', st.session_state.df[COLUMN_EXCLUDE])
                         if st.button("Hapus Baris"):
                                 Manipulasi_df.hapus_baris(st.session_state.df, row_to_drop)
-        
+
         with col_tambah_baris:
-                with st.popover('tambah baris'):
+                with st.expander('Tambah Baris'):
                         # Input untuk menambah baris baru
                         new_row = {}
                         for col in st.session_state.df.columns:
@@ -133,6 +132,6 @@ def main():
         # Dataframe kriteria
         st.header('Dataframe Perbandingan Kriteria')
         edited_df_kriteria = st.data_editor(st.session_state.df_perbandingan_kriteria)
-        
+
 if __name__ == "__main__":
         main()
