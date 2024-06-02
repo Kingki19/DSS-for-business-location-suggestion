@@ -175,7 +175,7 @@ def main():
                 # Menghitung nilai kriteria berdasarkan bobot
                 # nilai_kriteria_df = hitung_nilai_kriteria(edited_df_original, weights_df)
                 hitung_nilai_kriteria(edited_df_original, weights_df)
-                st.write(nilai_kriteria_df)
+                # st.write(nilai_kriteria_df)
         except ValueError as ve:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
         except Exception as e:
