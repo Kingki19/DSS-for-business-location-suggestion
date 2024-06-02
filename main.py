@@ -5,7 +5,9 @@ import google.generativeai as genai
 from scipy.stats import rankdata
 from sklearn.preprocessing import MinMaxScaler
 
+# KONSTANTA
 COLUMN_EXCLUDE = 'alternatif'
+INDEKS_ACAK = [0,0,0.58,0.90,1.12,1.24,1.32,1.41,1.45,1.49,1.51,1.48,1.56,1.57,1.59]
 
 def check_gemini_api_key_is_true(gemini_api_key: str):
         st.info("If you don't have Gemini API Key, go to link below:", icon="ℹ️")
@@ -100,7 +102,9 @@ def ahp(df: pd.DataFrame):
         return weights_df
 
 
-def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
+# def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
+def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame) -> pd.DataFrame:
+        df_cols = edited_df.columns.tolist()
         # Mengubah semua tipe nilai dalam edited_df_target menjadi float
         edited_df_target = edited_df.astype(float)
         st.write(edited_df_target)
@@ -110,7 +114,12 @@ def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame, weights_df: pd.D
         df_normalized = pd.DataFrame(scaler.fit_transform(edited_df_target), columns=edited_df_target.columns)
         # Menghitung mean dari setiap baris
         df_normalized['mean'] = df_normalized.mean(axis=1)
-        st.write(df_normalized)
+        # st.write(df_normalized)
+        dict_return = {
+                'kriteria': df_cols,
+                'bobot_kriteria': df_normalized['mean']
+        }
+        return dict_return
         # nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
         # return nilai_kriteria
 
@@ -184,14 +193,11 @@ def main():
                 return
 
         # Mengalikan bobot dengan nilai kriteria di edited_df
-        st.header('Menghitung Nilai Konsistensi dan bobot kriteria')
+        st.header('Menghitung Bobot Kriteria dan Konsistensi Rasio')
         try:
-                # Buatkan kode disini untuk menghitung nilai kriteria berdasarkan bobot kriterianya untuk setiap kriteria pada edited_df kecuali kolom 'alternatif'
-                # buat fungsi terpisah lalu terapkan kesini juga boleh
-                # Menghitung nilai kriteria berdasarkan bobot
-                # nilai_kriteria_df = hitung_nilai_kriteria(edited_df_original, weights_df)
-                hitung_nilai_perbandingan_kriteria(edited_df_kriteria, weights_df)
-                # st.write(nilai_kriteria_df)
+                bobot_kriteria = hitung_nilai_perbandingan_kriteria(edited_df_kriteria)
+                df_bobot_kriteria = pd.DataFrame(bobot_kriteria)
+                st.write(df_bobot_kriteria)
         except ValueError as ve:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
         except Exception as e:
