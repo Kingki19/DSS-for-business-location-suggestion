@@ -101,6 +101,28 @@ def ahp(df: pd.DataFrame):
         # Mengembalikan DataFrame yang berisi bobot
         return weights_df
 
+def calculate_consistency_ratio(matrix):
+        # Langkah 1: Membuat matriks perbandingan berpasangan
+        n = len(matrix)
+        
+        # Langkah 2: Menghitung eigenvector dan nilai eigen maksimum (λ_max)
+        eigenvalues, eigenvectors = np.linalg.eig(matrix)
+        max_eigenvalue = np.max(eigenvalues)
+        principal_eigenvector = eigenvectors[:, np.argmax(eigenvalues)]
+        principal_eigenvector = principal_eigenvector / principal_eigenvector.sum()  # Normalisasi
+        
+        # Langkah 3: Menghitung Indeks Konsistensi (CI)
+        CI = (max_eigenvalue - n) / (n - 1)
+        
+        # Langkah 4: Menghitung Rasio Konsistensi (CR) menggunakan Indeks Acak (RI)
+        # Tabel nilai RI untuk ukuran matriks tertentu
+        RI_dict = {1: 0.00, 2: 0.00, 3: 0.58, 4: 0.90, 5: 1.12, 6: 1.24, 7: 1.32, 8: 1.41, 9: 1.45, 10: 1.49}
+        RI = RI_dict.get(n, 1.49)  # Default ke 1.49 jika ukuran matriks di luar tabel RI
+        
+        CR = CI / RI
+        
+        return CR
+
 # Fungsi untuk membuat matriks perbandingan berpasangan
 def pairwise_comparison(values):
         size = len(values)
@@ -199,7 +221,7 @@ def main():
                 return
 
         # Menghitung bobot kriteria menggunakan AHP
-        st.header('Bobot Kriteria')
+        st.header('Bobot Kriteria dan Konsistensi Rasio')
         try:
                 weights_df = ahp(edited_df_kriteria)
                 st.write(weights_df)
@@ -207,17 +229,6 @@ def main():
         except Exception as e:
                 st.error(f"Terjadi kesalahan dalam perhitungan bobot: {e}")
                 return
-
-        # Mengalikan bobot dengan nilai kriteria di edited_df
-        st.header('Menghitung Bobot Kriteria dan Konsistensi Rasio')
-        try:
-                bobot_kriteria = hitung_nilai_perbandingan_kriteria(edited_df_kriteria)
-                df_bobot_kriteria = pd.DataFrame(bobot_kriteria)
-                st.write(df_bobot_kriteria)
-        except ValueError as ve:
-                st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
-        except Exception as e:
-                st.error(f"Terjadi kesalahan dalam perhitungan skor: {e}")
 
         st.header('Pairwise Comparison untuk setiap alternatif di setiap kriteria')
         # Loop melalui setiap kriteria kecuali kolom 'alternatif'
