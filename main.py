@@ -154,7 +154,7 @@ def main():
         try:
                 weights = ahp(edited_df_kriteria)
                 st.write(weights)
-                st.write(astype(weights))
+                st.write(type(weights))
         except Exception as e:
                 st.error(f"Terjadi kesalahan dalam perhitungan bobot: {e}")
                 return
