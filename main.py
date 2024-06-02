@@ -103,7 +103,7 @@ def ahp(df: pd.DataFrame):
 
 def calculate_consistency_ratio(df: pd.DataFrame) -> float:
         # Langkah 1: Mengonversi DataFrame menjadi numpy array
-        matrix = df.to_numpy()
+        matrix = df.astype(float).values
         n = len(matrix)
         
         # Langkah 2: Menghitung eigenvector dan nilai eigen maksimum (λ_max)
