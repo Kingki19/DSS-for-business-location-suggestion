@@ -143,25 +143,34 @@ def calculate_priority(comparison_matrix):
         return priorities.real
 
 def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) -> pd.DataFrame:
-        # Mendapatkan nama kriteria dari indeks DataFrame bobot kriteria
-        criteria_names = weights_df.index
-        
-        # Menghitung prioritas akhir untuk setiap alternatif
-        final_priorities = {}
-        for alt in priorities_dict['alternatif']:
-                final_priority = 0
-                for criterion in criteria_names:
-                        col_weight = weights_df.loc[criterion, 'Bobot']  # Mengakses bobot kriteria menggunakan indeks
-                        col_priorities_key = f'prioritas_{criterion}'  # Kunci yang digunakan dalam priorities_dict
-                        priorities_array = priorities_dict[col_priorities_key]  # Mengambil array prioritas dari priorities_dict
-                        alt_index = int(alt.split()[1])  # Mendapatkan indeks alternatif dari string alternatif
-                        alt_priority = float(priorities_array[alt_index])  # Mengambil nilai prioritas alternatif dari array prioritas
-                        final_priority += alt_priority * col_weight
-                final_priorities[alt] = final_priority
-        
-        # Membuat DataFrame untuk menampilkan prioritas akhir
-        final_priorities_df = pd.DataFrame(final_priorities.values(), index=final_priorities.keys(), columns=['Prioritas Akhir'])
-        return final_priorities_df
+    # Mendapatkan nama kriteria dari indeks DataFrame bobot kriteria
+    criteria_names = weights_df.index
+
+    # Menghitung prioritas akhir untuk setiap alternatif
+    final_priorities = {}
+    for alt in priorities_dict['alternatif']:
+        final_priority = 0
+        for criterion in criteria_names:
+            col_weight = weights_df.loc[criterion, 'Bobot']  # Mengakses bobot kriteria menggunakan indeks
+            col_priorities_key = f'prioritas_{criterion}'  # Kunci yang digunakan dalam priorities_dict
+            priorities_array = priorities_dict[col_priorities_key]  # Mengambil array prioritas dari priorities_dict
+            alt_index = int(alt.split()[1])  # Mendapatkan indeks alternatif dari string alternatif
+            print(f"Alt Index: {alt_index}")  # Cetak nilai Alt Index untuk memeriksanya
+            try:
+                alt_priority = float(priorities_array[alt_index])  # Mengambil nilai prioritas alternatif dari array prioritas
+                final_priority += alt_priority * col_weight
+            except IndexError as e:
+                print(f"IndexError: {e}")
+                print(f"Prioritas Array: {priorities_array}")
+                print(f"Alt Index: {alt_index}")
+                return
+
+        final_priorities[alt] = final_priority
+
+    # Membuat DataFrame untuk menampilkan prioritas akhir
+    final_priorities_df = pd.DataFrame(final_priorities.values(), index=final_priorities.keys(), columns=['Prioritas Akhir'])
+    return final_priorities_df
+
 
 
 
