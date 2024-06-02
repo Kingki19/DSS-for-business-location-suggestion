@@ -88,8 +88,13 @@ def ahp(df: pd.DataFrame):
         max_eigval = np.max(eigvals)
         eigvec = eigvecs[:, np.argmax(eigvals)].real
         weights = eigvec / np.sum(eigvec)
-        weights_df = pd.DataFrame(weights, index=df.index, columns=['Weight'])
+        weights_df = pd.DataFrame(weights, index=df.index, columns=['Bobot'])
         return weights_df
+
+def hitung_nilai_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
+        # Mengalikan bobot dengan nilai kriteria di edited_df
+        nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
+        return nilai_kriteria
 
 def main():
         st.title('DSS for Business Location Suggestion')
@@ -163,15 +168,12 @@ def main():
         # Mengalikan bobot dengan nilai kriteria di edited_df
         st.header('Skor Alternatif')
         try:
-                st.write(len(weights))
-                st.write(len(st.session_state.df.columns) - 1)
-                if len(weights) != len(st.session_state.df.columns) - 1:  # Jumlah bobot tidak sesuai dengan jumlah kolom, dikurangi 1 untuk COLUMN_EXCLUDE
-                        raise ValueError("Jumlah bobot tidak sesuai dengan jumlah kolom yang akan dihitung.")
-            
-                for i, col in enumerate(st.session_state.df.columns):
-                        if col != COLUMN_EXCLUDE:
-                                st.session_state.df[col] = st.session_state.df[col].astype(float) * weights[i]
-                st.write(st.session_state.df)
+                # Buatkan kode disini untuk menghitung nilai kriteria berdasarkan bobot kriterianya untuk setiap kriteria pada edited_df kecuali kolom 'alternatif'
+                # buat fungsi terpisah lalu terapkan kesini juga boleh
+                # Menghitung nilai kriteria berdasarkan bobot
+                st.header('Nilai Kriteria Berdasarkan Bobot')
+                nilai_kriteria_df = hitung_nilai_kriteria(edited_df_original, weights_df)
+                st.write(nilai_kriteria_df)
         except ValueError as ve:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
         except Exception as e:
