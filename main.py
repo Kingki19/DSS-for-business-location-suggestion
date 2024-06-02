@@ -271,7 +271,13 @@ def main():
         # Menghitung dan menampilkan prioritas akhir
         st.header('Prioritas Akhir untuk Setiap Alternatif')
         final_priorities_df = calculate_final_priority(weights_df, priorities_dict)
-        st.write(final_priorities_df)
+        col_priorities_df, col_kriteria_terbesar = st.columns(2)
+        with col_priorities_df:
+                st.write(final_priorities_df)
+        with col_kriteria_terbesar:
+                # Mendapatkan nama alternatif dengan prioritas akhir paling besar
+                max_priority_alternative = final_priorities_df['Prioritas Akhir'].idxmax()
+                st.write(f"Alternatif dengan Prioritas Akhir Paling Besar: {max_priority_alternative}")
 
 
 if __name__ == "__main__":
