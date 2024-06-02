@@ -25,9 +25,9 @@ def check_gemini_api_key_is_true(gemini_api_key: str):
 
 def data_asli() -> pd.DataFrame:
         df = pd.DataFrame({
-                'alternatif': ['Lokasi 1', 'Lokasi 2'],
-                'jarak_km': [1, 2],
-                'harga_sewa_pertahun': [3_000_000, 1_800_000]
+                'alternatif': ['Lokasi 1', 'Lokasi 2', 'Lokasi 3'],
+                'jarak_km': [1, 2, 4],
+                'harga_sewa_pertahun': [3_000_000, 1_800_000, 1_200_000]
         })
         return df
 
@@ -101,6 +101,22 @@ def ahp(df: pd.DataFrame):
         # Mengembalikan DataFrame yang berisi bobot
         return weights_df
 
+# Fungsi untuk membuat matriks perbandingan berpasangan
+def pairwise_comparison(values):
+    size = len(values)
+    comparison_matrix = np.zeros((size, size))
+    for i in range(size):
+        for j in range(size):
+            comparison_matrix[i, j] = values[i] / values[j]
+    return comparison_matrix
+
+# Fungsi untuk menghitung bobot prioritas
+def calculate_priority(comparison_matrix):
+    eigvals, eigvecs = np.linalg.eig(comparison_matrix)
+    max_eigval_index = np.argmax(eigvals)
+    max_eigvec = eigvecs[:, max_eigval_index]
+    priorities = max_eigvec / np.sum(max_eigvec)
+    return priorities.real
 
 # def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
 def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame) -> pd.DataFrame:
@@ -203,6 +219,16 @@ def main():
         except Exception as e:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {e}")
 
+        st.header('Pairwise Comparison untuk setiap alternatif di setiap kriteria')
+        # Loop melalui setiap kriteria kecuali kolom 'alternatif'
+        priorities_dict = {'alternatif': edited_df_original['alternatif']}
+        for column in edited_df_original.columns[1:]:
+                values = edited_df_original[column].values
+                comparison_matrix = pairwise_comparison(values)
+                priorities = calculate_priority(comparison_matrix)
+                priorities_dict[f'prioritas_{column}'] = priorities
+                st.write(f"Matriks Perbandingan Berpasangan {column}:\n", comparison_matrix)
+                st.write(f"\nPrioritas {column}:\n", priorities)
 
 if __name__ == "__main__":
         main()
