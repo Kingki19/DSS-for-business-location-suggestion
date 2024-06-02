@@ -30,11 +30,12 @@ def create_filtered_dataframe(df: pd.DataFrame, exclude_column: str) -> pd.DataF
         # Mengambil semua nama kolom kecuali 'exclude_column'
         columns_to_keep = [col for col in df.columns if col != exclude_column]
 
-        # Membuat DataFrame baru dengan kolom yang diinginkan
-        df_filtered = df[columns_to_keep].copy()
+        # Membuat DataFrame baru dengan satu kolom 'index_column' yang berisi nama kolom sesuai urutan
+        df_filtered = pd.DataFrame(index=columns_to_keep)
 
-        # Menambahkan kolom indeks yang berisi nama-nama kolom yang diulang sepanjang jumlah baris df_filtered
-        df_filtered['index_column'] = columns_to_keep[:len(df_filtered)]
+        # Menambahkan kolom yang sesuai dengan df kecuali COLUMN_EXCLUDE
+        for col in columns_to_keep:
+                df_filtered[col] = ""
 
         return df_filtered
 
