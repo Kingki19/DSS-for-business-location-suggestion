@@ -101,8 +101,9 @@ def ahp(df: pd.DataFrame):
         # Mengembalikan DataFrame yang berisi bobot
         return weights_df
 
-def calculate_consistency_ratio(matrix):
-        # Langkah 1: Membuat matriks perbandingan berpasangan
+def calculate_consistency_ratio(df: pd.DataFrame) -> float:
+        # Langkah 1: Mengonversi DataFrame menjadi numpy array
+        matrix = df.to_numpy()
         n = len(matrix)
         
         # Langkah 2: Menghitung eigenvector dan nilai eigen maksimum (λ_max)
@@ -220,16 +221,27 @@ def main():
                 st.warning("Harap isi semua nilai dalam dataframe perbandingan kriteria.")
                 return
 
-        # Menghitung bobot kriteria menggunakan AHP
+        # Menghitung bobot kriteria menggunakan AHP dan rasio konsistensi
         st.header('Bobot Kriteria dan Konsistensi Rasio')
-        try:
-                weights_df = ahp(edited_df_kriteria)
-                st.write(weights_df)
-                # st.write(type(weights))
-        except Exception as e:
-                st.error(f"Terjadi kesalahan dalam perhitungan bobot: {e}")
-                return
-
+        col_bobot, col_consistency_ratio = st.columns(2)
+        with col_bobot:
+                try:
+                        weights_df = ahp(edited_df_kriteria)
+                        st.write(weights_df)
+                        # st.write(type(weights))
+                except Exception as e:
+                        st.error(f"Terjadi kesalahan dalam perhitungan bobot: {e}")
+                        return
+        with col_consistency_ratio:
+                rasio_konsisten = calculate_consistency_ratio(edited_df_kriteria)
+                ambang_batas = 1
+                st.write(f"Rasio konsistensi: {rasio_konsisten")
+                st.write(f"Ambang batas: {ambang_batas}")
+                if rasio_konsisten < ambang_batas:
+                        st.write('Matriks di samping konsisten')
+                else:
+                        st.write('Matriks di samping tidak konsisten')
+                        
         st.header('Pairwise Comparison untuk setiap alternatif di setiap kriteria')
         # Loop melalui setiap kriteria kecuali kolom 'alternatif'
         priorities_dict = {'alternatif': edited_df_original['alternatif']}
