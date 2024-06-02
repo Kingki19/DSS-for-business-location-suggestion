@@ -92,7 +92,7 @@ def ahp(df: pd.DataFrame):
         weights_df = pd.DataFrame(weights, index=df.index, columns=['Bobot'])
         return weights_df
 
-def hitung_nilai_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
+def hitung_nilai_konsistensi(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
         # Mengalikan bobot dengan nilai kriteria di edited_df
         edited_df_target = edited_df.drop(columns=[COLUMN_EXCLUDE])
         # Mengubah semua tipe nilai dalam edited_df_target menjadi float
@@ -175,13 +175,13 @@ def main():
                 return
 
         # Mengalikan bobot dengan nilai kriteria di edited_df
-        st.header('Skor Alternatif')
+        st.header('Menghitung Nilai Konsistensi')
         try:
                 # Buatkan kode disini untuk menghitung nilai kriteria berdasarkan bobot kriterianya untuk setiap kriteria pada edited_df kecuali kolom 'alternatif'
                 # buat fungsi terpisah lalu terapkan kesini juga boleh
                 # Menghitung nilai kriteria berdasarkan bobot
                 # nilai_kriteria_df = hitung_nilai_kriteria(edited_df_original, weights_df)
-                hitung_nilai_kriteria(edited_df_original, weights_df)
+                hitung_nilai_konsistensi(edited_df_kriteria, weights_df)
                 # st.write(nilai_kriteria_df)
         except ValueError as ve:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
