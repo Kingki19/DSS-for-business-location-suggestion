@@ -270,8 +270,6 @@ def main():
 
         # Menghitung dan menampilkan prioritas akhir
         st.header('Prioritas Akhir untuk Setiap Alternatif')
-        st.write(weights_df)
-        st.write(priorities_dict)
         final_priorities_df = calculate_final_priority(weights_df, priorities_dict)
         st.write(final_priorities_df)
 
