@@ -175,7 +175,7 @@ def main():
         st.header('Dataframe Alternatif')
         edited_df_original = st.data_editor(st.session_state.df)
 
-        col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris, col_tambah_baris = st.columns(4)
+        col_tambah_kriteria, col_hapus_kriteria = st.columns(2)
 
         with col_tambah_kriteria:
                 with st.expander('Tambah Kriteria'):
@@ -186,7 +186,6 @@ def main():
                         # Tombol untuk menambahkan kolom baru
                         if st.button("Tambah Kolom Baru"):
                                 Manipulasi_df.tambah_kolom_kriteria(st.session_state.df, new_column_name, new_column_value)
-
         with col_hapus_kriteria:
                 with st.expander('Hapus Kriteria'):
                         # Pilih kolom untuk dihapus
@@ -195,13 +194,13 @@ def main():
                         if st.button("Hapus Kolom"):
                                 Manipulasi_df.hapus_kolom_kriteria(st.session_state.df, column_to_drop)
 
+        col_tambah_baris, col_hapus_baris = st.columns(2)
         with col_hapus_baris:
                 with st.expander('Hapus Baris'):
                         # Pilih baris untuk dihapus
                         row_to_drop = st.selectbox('Pilih baris yang ingin dihapus (berdasarkan alternatif):', st.session_state.df[COLUMN_EXCLUDE])
                         if st.button("Hapus Baris"):
                                 Manipulasi_df.hapus_baris(st.session_state.df, row_to_drop)
-
         with col_tambah_baris:
                 with st.expander('Tambah Baris'):
                         # Input untuk menambah baris baru
@@ -258,8 +257,8 @@ def main():
                                 st.write(f"\nPrioritas {column}:\n", priorities)
 
         # Menghitung dan menampilkan prioritas akhir
-        final_priorities_df = calculate_final_priority(weights_df, priorities_dict)
         st.header('Prioritas Akhir untuk Setiap Alternatif')
+        final_priorities_df = calculate_final_priority(weights_df, priorities_dict)
         st.write(final_priorities_df)
 
 
