@@ -226,16 +226,16 @@ def main():
         # Loop melalui setiap kriteria kecuali kolom 'alternatif'
         priorities_dict = {'alternatif': edited_df_original['alternatif']}
         with st.expander("Tekan untuk melihat hasilnya"):
-        for column in edited_df_original.columns[1:]:
-                values = edited_df_original[column].values
-                comparison_matrix = pairwise_comparison(values)
-                priorities = calculate_priority(comparison_matrix)
-                priorities_dict[f'prioritas_{column}'] = priorities
-                col_1, col_2 = st.columns(2)
-                with col_1:
-                        st.write(f"Matriks Perbandingan Berpasangan {column}:\n", comparison_matrix)
-                with col_2:
-                        st.write(f"\nPrioritas {column}:\n", priorities)
+                for column in edited_df_original.columns[1:]:
+                        values = edited_df_original[column].values
+                        comparison_matrix = pairwise_comparison(values)
+                        priorities = calculate_priority(comparison_matrix)
+                        priorities_dict[f'prioritas_{column}'] = priorities
+                        col_1, col_2 = st.columns(2)
+                        with col_1:
+                                st.write(f"Matriks Perbandingan Berpasangan {column}:\n", comparison_matrix)
+                        with col_2:
+                                st.write(f"\nPrioritas {column}:\n", priorities)
 
 if __name__ == "__main__":
         main()
