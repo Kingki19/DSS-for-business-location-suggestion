@@ -26,7 +26,7 @@ def check_gemini_api_key_is_true(gemini_api_key: str):
 def data_asli() -> pd.DataFrame:
         df = pd.DataFrame({
                 'alternatif': ['Lokasi 1', 'Lokasi 2', 'Lokasi 3'],
-                'jarak_km': [1, 2, 4],
+                'jarak_pusat_km': [1, 2, 4],
                 'harga_sewa_pertahun': [3_000_000, 1_800_000, 1_200_000],
                 'jarak_perumahan_km': [3, 4, 3]
         })
