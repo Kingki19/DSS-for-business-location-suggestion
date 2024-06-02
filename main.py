@@ -87,7 +87,7 @@ def main():
 
         # Menampilkan editor data
         st.header('Dataframe Alternatif')
-        edited_df = st.data_editor(st.session_state.df)
+        edited_df_original = st.data_editor(st.session_state.df)
 
         col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris, col_tambah_baris = st.columns(4)
        
@@ -125,10 +125,10 @@ def main():
                         # Tombol untuk menambahkan baris baru
                         if st.button("Tambah Baris Baru"):
                                 Manipulasi_df.tambah_baris(st.session_state.df, new_row)
-        
-        # Menampilkan DataFrame yang telah diedit
-        st.write("Data setelah diedit:")
-        st.write(st.session_state.df)
 
+        # Dataframe kriteria
+        st.header('Dataframe Perbandingan Kriteria')
+        edited_df_kriteria = st.data_editor(st.session_state.df_perbandingan_kriteria)
+        
 if __name__ == "__main__":
         main()
