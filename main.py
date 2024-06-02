@@ -62,8 +62,7 @@ class Manipulasi_df:
         
         def hapus_baris(df, baris):
                 if baris in df[COLUMN_EXCLUDE].values:
-                        df[df[COLUMN_EXCLUDE] != baris]
-                        st.session_state.df = df
+                        df = df[df[COLUMN_EXCLUDE] != baris]
                         # st.session_state.df.drop(index=baris, inplace=True)
                         st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
