@@ -34,7 +34,7 @@ def create_filtered_dataframe(df: pd.DataFrame, exclude_column: str) -> pd.DataF
         df_filtered = df[columns_to_keep].copy()
 
         # Menambahkan kolom indeks yang berisi nama-nama kolom yang diulang sepanjang jumlah baris df_filtered
-        df_filtered['index_column'] = ', '.join(columns_to_keep)
+        df_filtered['index_column'] = columns_to_keep[:len(df_filtered)]
 
         return df_filtered
 
