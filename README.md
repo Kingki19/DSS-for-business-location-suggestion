@@ -10,10 +10,10 @@ Create decisison with ease to help you support business decision for location ex
 > 4. Sabrina Putri Korina
 
 2. To do challenges for [BI Hackaton](https://www.bi.go.id/id/Hackaton/default.aspx)
-> Actually, i didn't find any teammates yet
+> Actually, i didn't find any teammates yet. I don't continue this to join the competition. 
 
 ### App link
-> App
+> App: [https://dss-for-business-location-suggestion-spk2.streamlit.app/](https://dss-for-business-location-suggestion-spk2.streamlit.app/)
 
 ### Technologies that we used
 1. Python
