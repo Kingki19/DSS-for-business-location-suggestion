@@ -161,12 +161,18 @@ def main():
         # Mengalikan bobot dengan nilai kriteria di edited_df
         st.header('Skor Alternatif')
         try:
+                if len(weights) != len(st.session_state.df.columns) - 1:  # Jumlah bobot tidak sesuai dengan jumlah kolom, dikurangi 1 untuk COLUMN_EXCLUDE
+                        raise ValueError("Jumlah bobot tidak sesuai dengan jumlah kolom yang akan dihitung.")
+            
                 for i, col in enumerate(st.session_state.df.columns):
                         if col != COLUMN_EXCLUDE:
                                 st.session_state.df[col] = st.session_state.df[col].astype(float) * weights[i]
                 st.write(st.session_state.df)
+        except ValueError as ve:
+                st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
         except Exception as e:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {e}")
+
 
 if __name__ == "__main__":
         main()
