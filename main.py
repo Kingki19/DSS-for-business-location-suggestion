@@ -84,25 +84,32 @@ class Manipulasi_df:
                         st.warning("Harap masukkan semua nilai untuk baris baru.")
 
 def ahp(df: pd.DataFrame):
+        # Mengubah nilai-nilai dalam DataFrame menjadi tipe data float dan mengubahnya menjadi matriks numpy
         weights_matrix = df.astype(float).values
+        # Menghitung nilai eigen dan vektor eigen dari matriks bobot
         eigvals, eigvecs = np.linalg.eig(weights_matrix)
+        # Menentukan nilai eigen maksimum
         max_eigval = np.max(eigvals)
+        # Mengambil vektor eigen yang berasosiasi dengan nilai eigen maksimum
         eigvec = eigvecs[:, np.argmax(eigvals)].real
+        # Menghitung bobot dengan membagi vektor eigen dengan jumlah total elemen dalam vektor eigen
         weights = eigvec / np.sum(eigvec)
+        # Membuat DataFrame baru untuk menampilkan bobot dengan indeks yang sama seperti DataFrame asli
         weights_df = pd.DataFrame(weights, index=df.index, columns=['Bobot'])
+        # Mengembalikan DataFrame yang berisi bobot
         return weights_df
 
-def hitung_nilai_konsistensi(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
-        # Mengalikan bobot dengan nilai kriteria di edited_df
-        # edited_df_target = edited_df.drop(columns=[COLUMN_EXCLUDE])
-        edited_df_target = edited_df
+
+def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
         # Mengubah semua tipe nilai dalam edited_df_target menjadi float
-        edited_df_target = edited_df_target.astype(float)
+        edited_df_target = edited_df.astype(float)
         st.write(edited_df_target)
         # Inisialisasi MinMaxScaler
         scaler = MinMaxScaler()
         # Normalisasi DataFrame
         df_normalized = pd.DataFrame(scaler.fit_transform(edited_df_target), columns=edited_df_target.columns)
+        # Menghitung mean dari setiap baris
+        df_normalized['mean'] = df_normalized.mean(axis=1)
         st.write(df_normalized)
         # nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
         # return nilai_kriteria
@@ -177,13 +184,13 @@ def main():
                 return
 
         # Mengalikan bobot dengan nilai kriteria di edited_df
-        st.header('Menghitung Nilai Konsistensi')
+        st.header('Menghitung Nilai Konsistensi dan bobot kriteria')
         try:
                 # Buatkan kode disini untuk menghitung nilai kriteria berdasarkan bobot kriterianya untuk setiap kriteria pada edited_df kecuali kolom 'alternatif'
                 # buat fungsi terpisah lalu terapkan kesini juga boleh
                 # Menghitung nilai kriteria berdasarkan bobot
                 # nilai_kriteria_df = hitung_nilai_kriteria(edited_df_original, weights_df)
-                hitung_nilai_konsistensi(edited_df_kriteria, weights_df)
+                hitung_nilai_perbandingan_kriteria(edited_df_kriteria, weights_df)
                 # st.write(nilai_kriteria_df)
         except ValueError as ve:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
