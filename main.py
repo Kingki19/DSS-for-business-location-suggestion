@@ -46,8 +46,10 @@ class Manipulasi_df:
         def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
                 if nama_kriteria:
                         df[nama_kriteria] = nilai_kriteria
-                        st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
                         st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+                        st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
+                        st.experimental_rerun() 
+                        
                 else:
                         st.warning("Harap masukkan nama kolom baru.")
         
