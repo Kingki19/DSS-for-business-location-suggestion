@@ -95,6 +95,8 @@ def ahp(df: pd.DataFrame):
 def hitung_nilai_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
         # Mengalikan bobot dengan nilai kriteria di edited_df
         edited_df_target = edited_df.drop(columns=[COLUMN_EXCLUDE])
+        # Mengubah semua tipe nilai dalam edited_df_target menjadi float
+        edited_df_target = edited_df_target.astype(float)
         # Inisialisasi MinMaxScaler
         scaler = MinMaxScaler()
         # Normalisasi DataFrame
