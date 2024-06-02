@@ -28,6 +28,7 @@ def data_asli() -> pd.DataFrame:
                 'alternatif': ['Lokasi 1', 'Lokasi 2', 'Lokasi 3'],
                 'jarak_km': [1, 2, 4],
                 'harga_sewa_pertahun': [3_000_000, 1_800_000, 1_200_000]
+                'jarak_perumahan_km': [3, 4, 3]
         })
         return df
 
@@ -119,9 +120,9 @@ def calculate_consistency_ratio(df: pd.DataFrame) -> float:
         # Tabel nilai RI untuk ukuran matriks tertentu
         RI_dict = {1: 0.00, 2: 0.00, 3: 0.58, 4: 0.90, 5: 1.12, 6: 1.24, 7: 1.32, 8: 1.41, 9: 1.45, 10: 1.49}
         RI = RI_dict.get(n, 1.49)  # Default ke 1.49 jika ukuran matriks di luar tabel RI
-        
+        if RI == 0:
+                st.warning("Kriteria hanya bisa minimal 3, jika kurang dari itu maka akan error dan menghasilkan nilai NaN")
         CR = CI / RI
-        st.write(f"{CI}{RI}{CR}")
         return CR
 
 # Fungsi untuk membuat matriks perbandingan berpasangan
