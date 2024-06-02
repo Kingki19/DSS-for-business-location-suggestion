@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import google.generativeai as genai
+from scipy.stats import rankdata
 
 COLUMN_EXCLUDE = 'alternatif'
 
@@ -80,6 +82,13 @@ class Manipulasi_df:
                 else:
                         st.warning("Harap masukkan semua nilai untuk baris baru.")
 
+def ahp(weights_matrix):
+        eigvals, eigvecs = np.linalg.eig(weights_matrix)
+        max_eigval = np.max(eigvals)
+        eigvec = eigvecs[:, np.argmax(eigvals)].real
+        weights = eigvec / np.sum(eigvec)
+        return weights
+
 def main():
         st.title('DSS for Business Location Suggestion')
 
@@ -133,6 +142,31 @@ def main():
         # Dataframe kriteria
         st.header('Dataframe Perbandingan Kriteria')
         edited_df_kriteria = st.data_editor(st.session_state.df_perbandingan_kriteria)
+
+        # Validasi bahwa semua nilai di edited_df_kriteria telah diisi
+        if edited_df_kriteria.isnull().values.any():
+                st.warning("Harap isi semua nilai dalam dataframe perbandingan kriteria.")
+                return
+
+        # Menghitung bobot kriteria menggunakan AHP
+        st.header('Bobot Kriteria')
+        try:
+                weights_matrix = edited_df_kriteria.astype(float).values
+                weights = ahp(weights_matrix)
+                st.write(weights)
+        except Exception as e:
+                st.error(f"Terjadi kesalahan dalam perhitungan bobot: {e}")
+                return
+
+        # Mengalikan bobot dengan nilai kriteria di edited_df
+        st.header('Skor Alternatif')
+        try:
+                for i, col in enumerate(st.session_state.df.columns):
+                        if col != COLUMN_EXCLUDE:
+                                st.session_state.df[col] = st.session_state.df[col].astype(float) * weights[i]
+                st.write(st.session_state.df)
+        except Exception as e:
+                st.error(f"Terjadi kesalahan dalam perhitungan skor: {e}")
 
 if __name__ == "__main__":
         main()
