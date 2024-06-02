@@ -189,7 +189,7 @@ def main():
                 > Jika ingin memanipulasi dataframe, manfaatkan beberapa fungsi dibawah.
         """)
         edited_df_original = st.data_editor(st.session_state.df)
-        st.markdown("###**Manipulasi Dataframe**")
+        st.markdown("### **Manipulasi Dataframe**")
         col_tambah_kriteria, col_hapus_kriteria = st.columns(2)
 
         with col_tambah_kriteria:
