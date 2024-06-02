@@ -161,6 +161,8 @@ def main():
         # Mengalikan bobot dengan nilai kriteria di edited_df
         st.header('Skor Alternatif')
         try:
+                st.write(len(weights))
+                st.write(len(st.session_state.df.columns) - 1)
                 if len(weights) != len(st.session_state.df.columns) - 1:  # Jumlah bobot tidak sesuai dengan jumlah kolom, dikurangi 1 untuk COLUMN_EXCLUDE
                         raise ValueError("Jumlah bobot tidak sesuai dengan jumlah kolom yang akan dihitung.")
             
