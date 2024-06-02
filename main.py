@@ -103,20 +103,20 @@ def ahp(df: pd.DataFrame):
 
 # Fungsi untuk membuat matriks perbandingan berpasangan
 def pairwise_comparison(values):
-    size = len(values)
-    comparison_matrix = np.zeros((size, size))
-    for i in range(size):
-        for j in range(size):
-            comparison_matrix[i, j] = values[i] / values[j]
-    return comparison_matrix
+        size = len(values)
+        comparison_matrix = np.zeros((size, size))
+        for i in range(size):
+                for j in range(size):
+                        comparison_matrix[i, j] = values[i] / values[j]
+        return comparison_matrix
 
 # Fungsi untuk menghitung bobot prioritas
 def calculate_priority(comparison_matrix):
-    eigvals, eigvecs = np.linalg.eig(comparison_matrix)
-    max_eigval_index = np.argmax(eigvals)
-    max_eigvec = eigvecs[:, max_eigval_index]
-    priorities = max_eigvec / np.sum(max_eigvec)
-    return priorities.real
+        eigvals, eigvecs = np.linalg.eig(comparison_matrix)
+        max_eigval_index = np.argmax(eigvals)
+        max_eigvec = eigvecs[:, max_eigval_index]
+        priorities = max_eigvec / np.sum(max_eigvec)
+        return priorities.real
 
 # def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
 def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame) -> pd.DataFrame:
