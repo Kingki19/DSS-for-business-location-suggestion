@@ -1,4 +1,4 @@
-# DSS for business location suggestion using AI
+# DSS for business location suggestion using ~AI~ AHP
 Create decisison with ease to help you support business decision for location expansion
 
 ### Reason why i make this
