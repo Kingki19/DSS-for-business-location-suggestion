@@ -98,7 +98,7 @@ def hitung_nilai_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> 
         # Inisialisasi MinMaxScaler
         scaler = MinMaxScaler()
         # Normalisasi DataFrame
-        df_normalized = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+        df_normalized = pd.DataFrame(scaler.fit_transform(edited_df_target), columns=edited_df_target.columns)
         st.write(df_normalized)
         # nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
         # return nilai_kriteria
