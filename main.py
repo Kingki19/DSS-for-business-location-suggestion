@@ -93,8 +93,10 @@ def ahp(df: pd.DataFrame):
 
 def hitung_nilai_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
         # Mengalikan bobot dengan nilai kriteria di edited_df
-        nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
-        return nilai_kriteria
+        edited_df = edited_df.drop(columns=[COLUMN_EXCLUDE])
+        st.write(edited_df)
+        # nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
+        # return nilai_kriteria
 
 def main():
         st.title('DSS for Business Location Suggestion')
@@ -171,8 +173,8 @@ def main():
                 # Buatkan kode disini untuk menghitung nilai kriteria berdasarkan bobot kriterianya untuk setiap kriteria pada edited_df kecuali kolom 'alternatif'
                 # buat fungsi terpisah lalu terapkan kesini juga boleh
                 # Menghitung nilai kriteria berdasarkan bobot
-                st.header('Nilai Kriteria Berdasarkan Bobot')
-                nilai_kriteria_df = hitung_nilai_kriteria(edited_df_original, weights_df)
+                # nilai_kriteria_df = hitung_nilai_kriteria(edited_df_original, weights_df)
+                hitung_nilai_kriteria(edited_df_original, weights_df)
                 st.write(nilai_kriteria_df)
         except ValueError as ve:
                 st.error(f"Terjadi kesalahan dalam perhitungan skor: {ve}")
