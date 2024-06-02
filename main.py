@@ -82,7 +82,8 @@ class Manipulasi_df:
                 else:
                         st.warning("Harap masukkan semua nilai untuk baris baru.")
 
-def ahp(weights_matrix):
+def ahp(df):
+        weights_matrix = df.astype(float).values
         eigvals, eigvecs = np.linalg.eig(weights_matrix)
         max_eigval = np.max(eigvals)
         eigvec = eigvecs[:, np.argmax(eigvals)].real
@@ -151,9 +152,9 @@ def main():
         # Menghitung bobot kriteria menggunakan AHP
         st.header('Bobot Kriteria')
         try:
-                weights_matrix = edited_df_kriteria.astype(float).values
-                weights = ahp(weights_matrix)
+                weights = ahp(edited_df_kriteria)
                 st.write(weights)
+                st.write(astype(weights))
         except Exception as e:
                 st.error(f"Terjadi kesalahan dalam perhitungan bobot: {e}")
                 return
