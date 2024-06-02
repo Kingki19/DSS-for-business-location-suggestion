@@ -235,7 +235,7 @@ def main():
         with col_consistency_ratio:
                 rasio_konsisten = calculate_consistency_ratio(edited_df_kriteria)
                 ambang_batas = 1
-                st.write(f"Rasio konsistensi: {rasio_konsisten")
+                st.write(f"Rasio konsistensi: {rasio_konsisten}")
                 st.write(f"Ambang batas: {ambang_batas}")
                 if rasio_konsisten < ambang_batas:
                         st.write('Matriks di samping konsisten')
