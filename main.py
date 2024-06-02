@@ -174,8 +174,8 @@ def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) ->
 
 
 def main():
-        st.title('DSS for Business Location Suggestion')
-
+        st.title('🗺️ Sistem Pengambil Keputusan untuk Saran Lokasi Bisnis menggunakan Analytic Hierarcy Process')
+        st.divider(color='random')
         # Memuat data asli
         if 'df' not in st.session_state:
                 st.session_state.df = data_asli()
@@ -183,7 +183,11 @@ def main():
                 st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
 
         # Menampilkan editor data
-        st.header('Dataframe Alternatif')
+        st.header('1️⃣ Dataframe Alternatif')
+        st.markdown("""
+        > Jika ingin mengganti nilai, ganti saja isi dari dataframe di bawah untuk menyesuaikan data aslimu.  
+        > Jika ingin memanipulasi dataframe, manfaatkan manipulasi dibawah
+        """)
         edited_df_original = st.data_editor(st.session_state.df)
 
         col_tambah_kriteria, col_hapus_kriteria = st.columns(2)
