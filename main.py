@@ -142,27 +142,6 @@ def calculate_priority(comparison_matrix):
         priorities = max_eigvec / np.sum(max_eigvec)
         return priorities.real
 
-# def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
-def hitung_nilai_perbandingan_kriteria(edited_df: pd.DataFrame) -> pd.DataFrame:
-        df_cols = edited_df.columns.tolist()
-        # Mengubah semua tipe nilai dalam edited_df_target menjadi float
-        edited_df_target = edited_df.astype(float)
-        st.write(edited_df_target)
-        # Inisialisasi MinMaxScaler
-        scaler = MinMaxScaler()
-        # Normalisasi DataFrame
-        df_normalized = pd.DataFrame(scaler.fit_transform(edited_df_target), columns=edited_df_target.columns)
-        # Menghitung mean dari setiap baris
-        df_normalized['mean'] = df_normalized.mean(axis=1)
-        # st.write(df_normalized)
-        dict_return = {
-                'kriteria': df_cols,
-                'bobot_kriteria': df_normalized['mean']
-        }
-        return dict_return
-        # nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
-        # return nilai_kriteria
-
 def main():
         st.title('DSS for Business Location Suggestion')
 
@@ -246,13 +225,17 @@ def main():
         st.header('Pairwise Comparison untuk setiap alternatif di setiap kriteria')
         # Loop melalui setiap kriteria kecuali kolom 'alternatif'
         priorities_dict = {'alternatif': edited_df_original['alternatif']}
+        with st.expander("Tekan untuk melihat hasilnya"):
         for column in edited_df_original.columns[1:]:
                 values = edited_df_original[column].values
                 comparison_matrix = pairwise_comparison(values)
                 priorities = calculate_priority(comparison_matrix)
                 priorities_dict[f'prioritas_{column}'] = priorities
-                st.write(f"Matriks Perbandingan Berpasangan {column}:\n", comparison_matrix)
-                st.write(f"\nPrioritas {column}:\n", priorities)
+                col_1, col_2 = st.columns(2)
+                with col_1:
+                        st.write(f"Matriks Perbandingan Berpasangan {column}:\n", comparison_matrix)
+                with col_2:
+                        st.write(f"\nPrioritas {column}:\n", priorities)
 
 if __name__ == "__main__":
         main()
