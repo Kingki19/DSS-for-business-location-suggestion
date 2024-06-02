@@ -142,6 +142,26 @@ def calculate_priority(comparison_matrix):
         priorities = max_eigvec / np.sum(max_eigvec)
         return priorities.real
 
+def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) -> pd.DataFrame:
+        # Mengambil bobot dari DataFrame bobot kriteria
+        weights = weights_df['Bobot'].values
+        
+        # Mengambil nilai prioritas dari dictionary
+        priorities = {key: value for key, value in priorities_dict.items() if key.startswith('prioritas_')}
+        
+        # Menghitung prioritas akhir untuk setiap alternatif
+        final_priorities = {}
+        for alt in priorities_dict['alternatif']:
+        final_priority = 0
+        for col in priorities.keys():
+                col_weight = weights_df.loc[col[len('prioritas_'):], 'Bobot']
+                final_priority += priorities[col][alt] * col_weight
+        final_priorities[alt] = final_priority
+        
+        # Membuat DataFrame untuk menampilkan prioritas akhir
+        final_priorities_df = pd.DataFrame(final_priorities.values(), index=final_priorities.keys(), columns=['Prioritas Akhir'])
+        return final_priorities_df
+
 def main():
         st.title('DSS for Business Location Suggestion')
 
@@ -236,6 +256,12 @@ def main():
                                 st.write(f"Matriks Perbandingan Berpasangan {column}:\n", comparison_matrix)
                         with col_2:
                                 st.write(f"\nPrioritas {column}:\n", priorities)
+
+        # Menghitung dan menampilkan prioritas akhir
+        final_priorities_df = calculate_final_priority(weights_df, priorities_dict)
+        st.header('Prioritas Akhir untuk Setiap Alternatif')
+        st.write(final_priorities_df)
+
 
 if __name__ == "__main__":
         main()
