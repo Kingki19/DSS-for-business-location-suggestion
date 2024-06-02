@@ -175,7 +175,7 @@ def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) ->
 
 def main():
         st.title('🗺️ Sistem Pengambil Keputusan untuk Saran Lokasi Bisnis menggunakan Analytic Hierarcy Process')
-        st.divider(color='random')
+        st.divider(color='rainbow')
         # Memuat data asli
         if 'df' not in st.session_state:
                 st.session_state.df = data_asli()
