@@ -111,7 +111,7 @@ def calculate_consistency_ratio(df: pd.DataFrame) -> float:
         max_eigenvalue = np.max(eigenvalues)
         principal_eigenvector = eigenvectors[:, np.argmax(eigenvalues)]
         principal_eigenvector = principal_eigenvector / principal_eigenvector.sum()  # Normalisasi
-        st.write("Nilai eigenvalues:", eigenvalues)
+
         # Langkah 3: Menghitung Indeks Konsistensi (CI)
         CI = (max_eigenvalue - n) / (n - 1)
         
@@ -121,7 +121,7 @@ def calculate_consistency_ratio(df: pd.DataFrame) -> float:
         RI = RI_dict.get(n, 1.49)  # Default ke 1.49 jika ukuran matriks di luar tabel RI
         
         CR = CI / RI
-        
+        st.write(f"{CI}{RI}{CR}")
         return CR
 
 # Fungsi untuk membuat matriks perbandingan berpasangan
