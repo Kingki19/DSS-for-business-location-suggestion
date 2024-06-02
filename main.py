@@ -155,6 +155,8 @@ def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) ->
                         col_priorities_key = f'prioritas_{criterion}'  # Kunci yang digunakan dalam priorities_dict
                         priorities_array = priorities_dict[col_priorities_key]  # Mengambil array prioritas dari priorities_dict
                         alt_index = int(alt.split()[1])  # Mendapatkan indeks alternatif dari string alternatif
+                        print(f"Prioritas Array: {priorities_array}")
+                        print(f"Alt Index: {alt_index}")
                         alt_priority = float(priorities_array.split(',')[alt_index])  # Mengambil nilai prioritas alternatif dari array prioritas
                         final_priority += alt_priority * col_weight
                 final_priorities[alt] = final_priority
