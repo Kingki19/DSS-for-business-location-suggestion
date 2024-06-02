@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import google.generativeai as genai
 
+COLUMN_EXCLUDE = 'alternatif'
+
 def check_gemini_api_key_is_true(gemini_api_key: str):
         st.info("If you don't have Gemini API Key, go to link below:", icon="ℹ️")
         st.markdown(f"""
@@ -25,6 +27,21 @@ def data_asli() -> pd.DataFrame:
         })
         return df
         
+def create_filtered_dataframe(df:pd.DataFrame, exclude_column:str) -> pd.DataFrame :
+        # Mengambil semua nama kolom kecuali 'exclude_column'
+        columns_to_keep = [col for col in df.columns if col != exclude_column]
+
+        # Membuat DataFrame baru dengan kolom yang diinginkan
+        df_filtered = df[columns_to_keep].copy()
+
+        # Menambahkan kolom indeks yang berisi nama-nama kolom
+        df_filtered['index_column'] = columns_to_keep
+
+        # Menjadikan 'index_column' sebagai indeks
+        # df_filtered.set_index('index_column', inplace=True)
+
+        return df_filtered
+        
 class Manipulasi_df:
         def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
                 if nama_kriteria:
@@ -35,8 +52,11 @@ class Manipulasi_df:
         
         def hapus_kolom_kriteria(df, nama_kriteria):
                 if nama_kriteria:
-                        df.drop(columns=[nama_kriteria], inplace=True)
-                        st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
+                        if nama_kriteria == COLUMN_EXCLUDE:
+                                st.warning("Harap pilih kolom lain yang ingin dihapus.")
+                        else:
+                                df.drop(columns=[nama_kriteria], inplace=True)
+                                st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap pilih kolom yang ingin dihapus.")
         
@@ -61,9 +81,12 @@ def main():
         # Memuat data asli
         if 'df' not in st.session_state:
                 st.session_state.df = data_asli()
+        if 'df_perbandingan_kriteria' not in st.session_state:
+                st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
 
         # Menampilkan editor data
-        edited_df = st.data_editor(st.session_state.df, num_rows='dynamic')
+        st.header('Dataframe Alternatif')
+        edited_df = st.data_editor(st.session_state.df)
 
         col_tambah_kriteria, col_hapus_kriteria, col_hapus_baris, col_tambah_baris = st.columns(4)
        
