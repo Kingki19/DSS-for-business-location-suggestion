@@ -97,6 +97,7 @@ def hitung_nilai_konsistensi(edited_df: pd.DataFrame, weights_df: pd.DataFrame) 
         edited_df_target = edited_df.drop(columns=[COLUMN_EXCLUDE])
         # Mengubah semua tipe nilai dalam edited_df_target menjadi float
         edited_df_target = edited_df_target.astype(float)
+        st.write(edited_df_target)
         # Inisialisasi MinMaxScaler
         scaler = MinMaxScaler()
         # Normalisasi DataFrame
