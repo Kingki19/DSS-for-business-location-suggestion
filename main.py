@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import google.generativeai as genai
+# import google.generativeai as genai
 from scipy.stats import rankdata
 from sklearn.preprocessing import MinMaxScaler
 
@@ -9,19 +9,25 @@ from sklearn.preprocessing import MinMaxScaler
 COLUMN_EXCLUDE = 'alternatif'
 INDEKS_ACAK = [0,0,0.58,0.90,1.12,1.24,1.32,1.41,1.45,1.49,1.51,1.48,1.56,1.57,1.59]
 
-def check_gemini_api_key_is_true(gemini_api_key: str):
-        st.info("If you don't have Gemini API Key, go to link below:", icon="ℹ️")
-        st.markdown(f"""
-                [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
-        """)
-        if len(gemini_api_key) != 0:
-                try:
-                        genai.configure(api_key=gemini_api_key)
-                        model = genai.GenerativeModel('gemini-pro')
-                        response = model.generate_content("Hello")
-                        st.success("Gemini API key is valid!")
-                except Exception as e:
-                        st.warning(e)
+# KONFIGURASI HALAMAN
+st.set_page_config(
+        page_title="SPK-AHP Lokasi Bisnis",
+        layout="wide",
+)
+
+# def check_gemini_api_key_is_true(gemini_api_key: str):
+#         st.info("If you don't have Gemini API Key, go to link below:", icon="ℹ️")
+#         st.markdown(f"""
+#                 [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+#         """)
+#         if len(gemini_api_key) != 0:
+#                 try:
+#                         genai.configure(api_key=gemini_api_key)
+#                         model = genai.GenerativeModel('gemini-pro')
+#                         response = model.generate_content("Hello")
+#                         st.success("Gemini API key is valid!")
+#                 except Exception as e:
+#                         st.warning(e)
 
 def data_asli() -> pd.DataFrame:
         df = pd.DataFrame({
