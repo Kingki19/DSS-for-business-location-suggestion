@@ -155,13 +155,14 @@ def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) ->
                         col_priorities_key = f'prioritas_{criterion}'  # Kunci yang digunakan dalam priorities_dict
                         priorities_array = priorities_dict[col_priorities_key]  # Mengambil array prioritas dari priorities_dict
                         alt_index = int(alt.split()[1])  # Mendapatkan indeks alternatif dari string alternatif
-                        alt_priority = priorities_array[alt_index]
+                        alt_priority = float(priorities_array.split(',')[alt_index])  # Mengambil nilai prioritas alternatif dari array prioritas
                         final_priority += alt_priority * col_weight
                 final_priorities[alt] = final_priority
-
+        
         # Membuat DataFrame untuk menampilkan prioritas akhir
         final_priorities_df = pd.DataFrame(final_priorities.values(), index=final_priorities.keys(), columns=['Prioritas Akhir'])
         return final_priorities_df
+
 
 def main():
         st.title('DSS for Business Location Suggestion')
