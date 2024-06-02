@@ -61,8 +61,9 @@ class Manipulasi_df:
                         st.warning("Harap pilih kolom yang ingin dihapus.")
         
         def hapus_baris(df, baris):
-                if baris in st.session_state.df[COLUMN_EXCLUDE].values:
-                        st.session_state.df[st.session_state.df[COLUMN_EXCLUDE] != baris]
+                if baris in df[COLUMN_EXCLUDE].values:
+                        df[df[COLUMN_EXCLUDE] != baris]
+                        st.session_state.df = df
                         # st.session_state.df.drop(index=baris, inplace=True)
                         st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
