@@ -151,7 +151,6 @@ def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) ->
         for alt in priorities_dict['alternatif']:
                 final_priority = 0
                 alt_index = int(alt.split()[-1]) - 1  # Mengambil angka dari string 'Lokasi X' dan mengubahnya menjadi indeks yang benar
-                st.write(f"Alt Index: {alt_index}")  # Cetak nilai Alt Index untuk memeriksanya
                 try:
                         for criterion in criteria_names:
                                 col_weight = weights_df.loc[criterion, 'Bobot']  # Mengakses bobot kriteria menggunakan indeks
