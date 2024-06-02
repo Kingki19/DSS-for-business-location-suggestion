@@ -46,6 +46,7 @@ class Manipulasi_df:
         def tambah_kolom_kriteria(df, nama_kriteria, nilai_kriteria):
                 if nama_kriteria:
                         df[nama_kriteria] = nilai_kriteria
+                        st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
                         st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap masukkan nama kolom baru.")
@@ -56,6 +57,7 @@ class Manipulasi_df:
                                 st.warning("Harap pilih kolom lain yang ingin dihapus.")
                         else:
                                 df.drop(columns=[nama_kriteria], inplace=True)
+                                st.session_state.df_perbandingan_kriteria = create_filtered_dataframe(st.session_state.df, COLUMN_EXCLUDE)
                                 st.experimental_rerun()  # Refresh halaman untuk memperbarui DataFrame
                 else:
                         st.warning("Harap pilih kolom yang ingin dihapus.")
