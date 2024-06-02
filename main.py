@@ -145,19 +145,20 @@ def calculate_priority(comparison_matrix):
 def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) -> pd.DataFrame:
         # Mendapatkan nama kriteria dari indeks DataFrame bobot kriteria
         criteria_names = weights_df.index
-        st.write(criteria_names)
+        
         # Menghitung prioritas akhir untuk setiap alternatif
         final_priorities = {}
         for alt in priorities_dict['alternatif']:
-                st.write(alt)
                 final_priority = 0
                 for criterion in criteria_names:
-                        st.write(criterion)
                         col_weight = weights_df.loc[criterion, 'Bobot']  # Mengakses bobot kriteria menggunakan indeks
                         col_priorities_key = f'prioritas_{criterion}'  # Kunci yang digunakan dalam priorities_dict
-                        final_priority += priorities_dict[col_priorities_key][alt] * col_weight
+                        priorities_array = priorities_dict[col_priorities_key]  # Mengambil array prioritas dari priorities_dict
+                        alt_index = int(alt.split()[1])  # Mendapatkan indeks alternatif dari string alternatif
+                        alt_priority = priorities_array[alt_index]
+                        final_priority += alt_priority * col_weight
                 final_priorities[alt] = final_priority
-        
+
         # Membuat DataFrame untuk menampilkan prioritas akhir
         final_priorities_df = pd.DataFrame(final_priorities.values(), index=final_priorities.keys(), columns=['Prioritas Akhir'])
         return final_priorities_df
