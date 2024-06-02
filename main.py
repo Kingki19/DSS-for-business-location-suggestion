@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import google.generativeai as genai
 from scipy.stats import rankdata
+from sklearn.preprocessing import MinMaxScaler
 
 COLUMN_EXCLUDE = 'alternatif'
 
@@ -93,8 +94,12 @@ def ahp(df: pd.DataFrame):
 
 def hitung_nilai_kriteria(edited_df: pd.DataFrame, weights_df: pd.DataFrame) -> pd.DataFrame:
         # Mengalikan bobot dengan nilai kriteria di edited_df
-        edited_df = edited_df.drop(columns=[COLUMN_EXCLUDE])
-        st.write(edited_df)
+        edited_df_target = edited_df.drop(columns=[COLUMN_EXCLUDE])
+        # Inisialisasi MinMaxScaler
+        scaler = MinMaxScaler()
+        # Normalisasi DataFrame
+        df_normalized = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+        st.write(df_normalized)
         # nilai_kriteria = edited_df.drop(columns=[COLUMN_EXCLUDE]).mul(weights_df['Bobot'], axis=0)
         # return nilai_kriteria
 
