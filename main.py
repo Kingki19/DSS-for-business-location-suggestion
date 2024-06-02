@@ -175,7 +175,7 @@ def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) ->
 
 def main():
         st.title('🗺️ Sistem Pengambil Keputusan untuk Saran Lokasi Bisnis menggunakan Analytic Hierarcy Process')
-        st.divider(color='rainbow')
+        st.divider()
         # Memuat data asli
         if 'df' not in st.session_state:
                 st.session_state.df = data_asli()
@@ -185,11 +185,11 @@ def main():
         # Menampilkan editor data
         st.header('1️⃣ Dataframe Alternatif')
         st.markdown("""
-        > Jika ingin mengganti nilai, ganti saja isi dari dataframe di bawah untuk menyesuaikan data aslimu.  
-        > Jika ingin memanipulasi dataframe, manfaatkan manipulasi dibawah
+                > Jika ingin mengganti nilai, ganti saja isi dari dataframe di bawah untuk menyesuaikan data aslimu.  
+                > Jika ingin memanipulasi dataframe, manfaatkan beberapa fungsi dibawah.
         """)
         edited_df_original = st.data_editor(st.session_state.df)
-
+        st.markdown("###**Manipulasi Dataframe**")
         col_tambah_kriteria, col_hapus_kriteria = st.columns(2)
 
         with col_tambah_kriteria:
@@ -225,9 +225,12 @@ def main():
                         # Tombol untuk menambahkan baris baru
                         if st.button("Tambah Baris Baru"):
                                 Manipulasi_df.tambah_baris(st.session_state.df, new_row)
-
+        st.divider()
         # Dataframe kriteria
-        st.header('Dataframe Perbandingan Kriteria')
+        st.header('2️⃣ Dataframe Perbandingan Kriteria')
+        st.markdown("""
+                > Jika kosong maka isi dulu pakai aturan pengisian hirarki AHP.   
+        """)
         edited_df_kriteria = st.data_editor(st.session_state.df_perbandingan_kriteria)
 
         # Validasi bahwa semua nilai di edited_df_kriteria telah diisi
@@ -236,7 +239,7 @@ def main():
                 return
 
         # Menghitung bobot kriteria menggunakan AHP dan rasio konsistensi
-        st.header('Bobot Kriteria dan Konsistensi Rasio')
+        st.header('3️⃣ Bobot Kriteria dan Konsistensi Rasio')
         col_bobot, col_consistency_ratio = st.columns(2)
         with col_bobot:
                 try:
@@ -255,8 +258,8 @@ def main():
                         st.write('Matriks di samping konsisten')
                 else:
                         st.write('Matriks di samping tidak konsisten')
-                        
-        st.header('Pairwise Comparison untuk setiap alternatif di setiap kriteria')
+        st.divider()            
+        st.header('4️⃣ Pairwise Comparison untuk setiap alternatif di setiap kriteria')
         # Loop melalui setiap kriteria kecuali kolom 'alternatif'
         priorities_dict = {'alternatif': edited_df_original['alternatif']}
         with st.expander("Tekan untuk melihat hasilnya"):
@@ -270,9 +273,9 @@ def main():
                                 st.write(f"Matriks Perbandingan Berpasangan {column}:\n", comparison_matrix)
                         with col_2:
                                 st.write(f"\nPrioritas {column}:\n", priorities)
-
+        st.divider() 
         # Menghitung dan menampilkan prioritas akhir
-        st.header('Prioritas Akhir untuk Setiap Alternatif')
+        st.header('5️⃣ Prioritas Akhir untuk Setiap Alternatif')
         final_priorities_df = calculate_final_priority(weights_df, priorities_dict)
         col_priorities_df, col_kriteria_terbesar = st.columns(2)
         with col_priorities_df:
