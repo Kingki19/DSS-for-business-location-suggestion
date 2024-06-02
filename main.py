@@ -34,7 +34,7 @@ def create_filtered_dataframe(df: pd.DataFrame, exclude_column: str) -> pd.DataF
         df_filtered = df[columns_to_keep].copy()
 
         # Menambahkan kolom indeks yang berisi nama-nama kolom
-        df_filtered['index_column'] = columns_to_keep
+        df_filtered['index_column'] = range(len(df_filtered))
 
         return df_filtered
 
