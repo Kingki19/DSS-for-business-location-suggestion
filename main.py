@@ -33,8 +33,8 @@ def create_filtered_dataframe(df: pd.DataFrame, exclude_column: str) -> pd.DataF
         # Membuat DataFrame baru dengan kolom yang diinginkan
         df_filtered = df[columns_to_keep].copy()
 
-        # Menambahkan kolom indeks yang berisi nama-nama kolom
-        df_filtered['index_column'] = range(len(df_filtered))
+        # Menambahkan kolom indeks yang berisi nama-nama kolom yang diulang sepanjang jumlah baris df_filtered
+        df_filtered['index_column'] = ', '.join(columns_to_keep)
 
         return df_filtered
 
