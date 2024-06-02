@@ -82,13 +82,14 @@ class Manipulasi_df:
                 else:
                         st.warning("Harap masukkan semua nilai untuk baris baru.")
 
-def ahp(df):
+def ahp(df: pd.DataFrame):
         weights_matrix = df.astype(float).values
         eigvals, eigvecs = np.linalg.eig(weights_matrix)
         max_eigval = np.max(eigvals)
         eigvec = eigvecs[:, np.argmax(eigvals)].real
         weights = eigvec / np.sum(eigvec)
-        return weights
+        weights_df = pd.DataFrame(weights, index=df.index, columns=['Weight'])
+        return weights_df
 
 def main():
         st.title('DSS for Business Location Suggestion')
@@ -152,9 +153,9 @@ def main():
         # Menghitung bobot kriteria menggunakan AHP
         st.header('Bobot Kriteria')
         try:
-                weights = ahp(edited_df_kriteria)
-                st.write(weights)
-                st.write(type(weights))
+                weights_df = ahp(edited_df_kriteria)
+                st.write(weights_df)
+                # st.write(type(weights))
         except Exception as e:
                 st.error(f"Terjadi kesalahan dalam perhitungan bobot: {e}")
                 return
