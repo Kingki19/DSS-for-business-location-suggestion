@@ -146,16 +146,16 @@ def calculate_final_priority(weights_df: pd.DataFrame, priorities_dict: dict) ->
         # Mengambil bobot dari DataFrame bobot kriteria
         weights = weights_df['Bobot'].values
         
-        # Mengambil nilai prioritas dari dictionary
-        priorities = {key: value for key, value in priorities_dict.items() if key.startswith('prioritas_')}
+        # Mendapatkan nama kriteria dari indeks DataFrame bobot kriteria
+        criteria_names = weights_df.index
         
         # Menghitung prioritas akhir untuk setiap alternatif
         final_priorities = {}
         for alt in priorities_dict['alternatif']:
                 final_priority = 0
-                for col in priorities.keys():
-                        col_weight = weights_df.loc[col[len('prioritas_'):], 'Bobot']
-                        final_priority += priorities[col][alt] * col_weight
+                for col, criterion in zip(weights_df.columns, criteria_names):
+                        col_weight = weights_df.loc[criterion, 'Bobot']
+                        final_priority += priorities_dict[f'prioritas_{col}'][alt] * col_weight
                 final_priorities[alt] = final_priority
         
         # Membuat DataFrame untuk menampilkan prioritas akhir
