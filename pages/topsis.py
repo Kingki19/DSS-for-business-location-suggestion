@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from scipy.stats import rankdata
 
 # KONSTANTA
 COLUMN_EXCLUDE = 'alternatif'
